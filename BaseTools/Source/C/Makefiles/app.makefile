@@ -12,7 +12,11 @@ include $(MAKEROOT)/Makefiles/header.makefile
 APPLICATION = $(MAKEROOT)/bin/$(APPNAME)
 
 .PHONY:all
+ifeq (Windows, $(findstring Windows,$(OS)))
+all: $(MAKEROOT)/bin $(BIN_PATH) $(APPLICATION)
+else
 all: $(MAKEROOT)/bin $(APPLICATION)
+endif
 
 $(APPLICATION): $(OBJECTS)
 	$(LINKER) -o $(APPLICATION) $(LDFLAGS) $(OBJECTS) -L$(MAKEROOT)/libs $(LIBS)

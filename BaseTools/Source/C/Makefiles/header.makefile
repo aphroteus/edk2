@@ -211,6 +211,8 @@ $(MAKEROOT)/libs:
 
 $(MAKEROOT)/bin:
 	$(MD) $(MAKEROOT)/bin
+
 ifeq (Windows, $(findstring Windows,$(OS)))
+$(BIN_PATH):
 	$(MD) $(BIN_PATH)
 endif

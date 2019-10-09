@@ -210,8 +210,17 @@ endif
         if not os.path.exists(os.path.join(self._AutoGenObject.MakeFileDir, "deps.txt")):
             with open(os.path.join(self._AutoGenObject.MakeFileDir, "deps.txt"),"w+") as fd:
                 fd.write("")
-        if not os.path.exists(os.path.join(self._AutoGenObject.MakeFileDir, "dependency")):
-            with open(os.path.join(self._AutoGenObject.MakeFileDir, "dependency"),"w+") as fd:
+        dep_path = os.path.join(self._AutoGenObject.MakeFileDir, "dependency")
+        if os.path.exists(dep_path):
+            with open(dep_path, "r") as fd:
+                dep_content = fd.read()
+            # Clear the dependency file if it contains syntax for the wrong make type
+            if (self._FileType == GMAKE_FILETYPE and "!IF" in dep_content) or \
+               (self._FileType == NMAKE_FILETYPE and "-include " in dep_content):
+                with open(dep_path, "w") as fd:
+                    fd.write("")
+        else:
+            with open(dep_path, "w+") as fd:
                 fd.write("")
         if not os.path.exists(os.path.join(self._AutoGenObject.MakeFileDir, "deps_target")):
             with open(os.path.join(self._AutoGenObject.MakeFileDir, "deps_target"),"w+") as fd:
